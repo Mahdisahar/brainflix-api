@@ -2,19 +2,25 @@ const express = require('express');
 const cores = require('cors');
 const app = express();
 
-const videos = require('./routes/videos');
+// imports videos routes module 
+const videosRoute = require('./routes/videos');
+
+// loading variable from .env
 require('dotenv').config({path: './.env'});
 
 const PORT = process.env.PORT;
 
-app.use(express.json());
+// Middleware setup
 app.use(express.static('public'));
 app.use(cores());
+app.use(express.json());
 
-app.use('/videos', videos);
-app.use('/videos/:id', videos);
+// Route Handling
+app.use('/videos', videosRoute);
+app.use('/videos/:id', videosRoute);
+app.use('/videos', videosRoute);
 
-
+// The app is listening on port 8085
 app.listen(PORT, ()=> {
-console.log(`server running on port :${PORT}`);
+console.log(`server is running on port :${PORT}`);
 });
