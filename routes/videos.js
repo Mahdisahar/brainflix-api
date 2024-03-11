@@ -12,7 +12,6 @@ function readVideoData() {
 
 // get videos
 router.get('/', (req, res) => {
-	// try {} catch(error){res.send(error)}
   const videosData = readVideoData();
   res.status(200).send(videosData);
 });
@@ -21,8 +20,6 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const videoData = readVideoData();
   const { id } = req.params;
-//   const selectedVideo = videoData.find((videoItem) => videoItem.id === id);
-//   res.status(200).send(selectedVideo);
 const selectedVideo = videoData.find((videoItem) => {
 	return videoItem.id === id;
 });
@@ -40,27 +37,28 @@ router.post('/', (req, res) => {
 // Construct the new video object
 const newVideo = {
 	title: req.body.title ,
-	channel:req.body.channel,
+	channel: "My new Channel",
 	description: req.body.description,
 	id:uuid(),
 	views: 0,
 	likes:0,
 	duration: req.body.duration,
 	video: req.body.video,
-	image: "http://localhost:8085/images/Upload-video-preview.jpg",
+	image: "Upload-video-preview.jpg",
 	timestamp:Date.now(),
 	comments: []
 };
 
-  // Add the new video to the list
-videoData.push(newVideo);
+videoData.unshift(newVideo);
 
 // JSON.strinfigy the newly updated video 
 const writeVideo = JSON.stringify(videoData);
-fs.writeFileSync('./data/postvideo.json', writeVideo);
+fs.writeFileSync('./data/video.json', writeVideo);
+
 
   // write the stringified video to the video.json file
   res.status(200).send(newVideo);
 });
+  // Add the new video to the list
 
 module.exports = router;
